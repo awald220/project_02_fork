@@ -1,0 +1,66 @@
+API ROUTES
+
+Users
+  Get: 
+    req: name/password
+    res: userid
+    user.findall where name=req.name
+      if match check password
+        if passwords match respond with userid
+        else respond with 'wrong password'
+      if no match respond with 'no match'    
+
+  Post
+    req: name/password
+    res: userid
+      findall where name=req.name
+        if match respond with 'name taken'
+        else create row with name/password (encrypted w/ library)
+
+Games
+  Get: 
+    req: userid 
+    res: gameid
+      findall where active && !busy
+      assign game that user has not played
+        set game to busy
+      or create a game if none available
+        api to get random sentences 
+      make array of steps, respond with last not null element
+  Get all not active for history
+  Get game by id 
+    respond with array of 5 steps
+      
+  Put: 
+    req: entry gameid
+    res: redirect to home or game title if finished
+      set busy to false
+      make array of steps push to first null 
+        if length == 5 set game to !active
+
+
+
+
+Users
+Name: string
+Password: string
+
+Games
+Original: string
+First: string
+Second: string
+Third: string
+Final: string
+Active: boolean
+Busy: boolean
+UserIds: text 33,44,55 .split(',')
+
+bcrypt
+
+Home 
+
+Game page (/:id)
+
+All games
+
+Currently playing page
