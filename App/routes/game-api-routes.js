@@ -13,7 +13,7 @@ module.exports = function(app) {
 	});
 
 	app.put("/api/game", function(req, res) {
-    
+		console.log(req.body);
 		let submission = req.body.submission;
 		let gameId = req.body.gameId;
 		let userId = req.body.userId;
@@ -47,21 +47,14 @@ module.exports = function(app) {
 				newData.active = false;
 			}
 			let dataArray = ["second", "third", "fourth", "final"];
-			newData[dataArray[prompts.length-1]] = submission;
+			// newData[dataArray[prompts.length-1]] = submission;
+			newData[dataArray[1]] = submission;
 
 			db.Game.update(newData,{where: {id: game.id}} ).then(function(result) {
-				// res.json(result);
+				res.json(result);
 			});
 		});
 
 
-
-		db.Game.update(req.body, {
-			where: {
-				id: req.body.id,
-			},
-		}).then(function(dbGame) {
-			res.json(dbGame);
-		});
 	});
 };

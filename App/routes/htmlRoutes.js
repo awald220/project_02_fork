@@ -13,14 +13,11 @@ module.exports =  function(app) {
 
 	app.get("/play", (req, res) => {
 		let userId = req.query.userId;
-		console.log(req.query);
 		db.Game.findAll({ where: { busy: false, active: true } }).then(async function(
 			results
 		) {
-			console.log(results);
 			let game;
 			let allGames = results.map(e=>e.dataValues) ;
-			console.log("allGames",allGames);
 
 
 			if (allGames.length === 0) {
