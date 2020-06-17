@@ -35,6 +35,7 @@ module.exports =  function(app) {
 					// game = createGame()
 				}
 			}
+			
 			let prompts = [
 				game.original,
 				game.second,
@@ -43,13 +44,7 @@ module.exports =  function(app) {
 				game.final,
 			];
 			prompts = prompts.filter((e) => e);
-			let userIds;
-			if(game.userIds){
-				userIds=game.userIds + ","+userId;
-			}else{
-				userIds = userId;
-			}
-			db.Game.update({userIds: userIds},{where: {id: game.id}} );
+			
 			res.render("gamePlay", {
 				prompt: prompts[prompts.length - 1],
 			});
