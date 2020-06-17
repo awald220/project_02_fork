@@ -1,21 +1,20 @@
 module.exports = function(sequelize, DataTypes) {
-  const Game = sequelize.define('Game', {
-    original: DataTypes.STRING,
-    first: DataTypes.STRING,
-    second: DataTypes.STRING,
-    third: DataTypes.STRING,
-    final: DataTypes.STRING,
-    active: DataTypes.BOOLEAN,
-    busy: DataTypes.BOOLEAN,
-    userIds: {
-      type: DataTypes.STRING,
-      get() {
-        return JSON.parse(this.getDataValue('userIdArray'));
-      },
-      set(val) {
-        return this.setDataValue('userIdArray', JSON.stringify(val));
-      },
-    },
-  });
-  return Game;
+	const Game = sequelize.define("Game", {
+		original: DataTypes.STRING,
+		second: DataTypes.STRING,
+		third: DataTypes.STRING,
+		fourth: DataTypes.STRING,
+		final: DataTypes.STRING,
+		active: DataTypes.BOOLEAN,
+		busy: DataTypes.BOOLEAN,
+		userIds: DataTypes.STRING
+	});
+	// Game.associate = function(models){
+	// 	Game.belongsTo(models.User, {
+	//     foreignKey: {
+	//       allowNull:
+	//     }
+	//   });
+	// };
+	return Game;
 };
