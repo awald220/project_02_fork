@@ -22,11 +22,71 @@
 
     <div class="row">
         <div class="col">
-     
+
             <div class="progress">
                 <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
                 </div>
             </div>
+
+            <div class="timer"></div>
+            <div class="timer2"></div>
         </div>
     </div>
 </div>
+<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+
+<script>
+
+    var time = 5;
+    var timer = 10;
+    var id = setInterval(counterUp, 1000)
+    var id2;
+   
+    $("#play-button").on("click", function () {
+
+        counterUp()
+
+    })
+
+
+    function counterUp() {
+        $("#guessBox").hide()
+        var timerDiv = document.querySelector(".timer")
+        timerDiv.textContent = time -= 1;
+
+        // this line applies to the var id code line
+
+        if (time === 0) {
+            
+            clearInterval(id)
+            $("#promptBox").hide()
+            $("#guessBox").show()
+            counterUp2()
+            id2 = setInterval(counterUp2, 1000)
+            $(".timer").hide()
+
+
+        }
+        
+    }
+    
+       
+    function counterUp2() {
+     
+        var timerDiv2 = document.querySelector(".timer2")
+        timerDiv2.textContent = timer -= 1;
+
+        if (timer === 0) {
+            clearInterval(id2)
+        }
+    }
+
+
+
+
+
+
+
+
+
+</script>
