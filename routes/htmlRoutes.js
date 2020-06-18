@@ -1,4 +1,5 @@
 const db = require("../models");
+const axios = require("axios");
 
 module.exports = function (app) {
 	// Load index page
@@ -10,6 +11,7 @@ module.exports = function (app) {
 
 	app.get("/play", (req, res) => {
 		let userId = req.query.userId;
+   
 		db.Game.findAll({ where: { busy: false, active: true } }).then(
 			async function (results) {
 				let game;
@@ -67,11 +69,17 @@ module.exports = function (app) {
 	});
 
 	function createGame() {
-		let prompt = "this is the second original prompt"; // random sentence api
-		return db.Game.create({
-			original: prompt,
-			active: true,
-			busy: true,
+		return new Promise((resolve,reject)=>{
+			let prompt;
+
+			axios.get("http://quotes.stormconsultancy.co.uk/random.json").then(res=>{
+				prompt = res.data.quote;
+				resolve( db.Game.create({
+					original: prompt,
+					active: true,
+					busy: true,
+				}));
+			}).catch(err=> reject("there was an error"));
 		});
 	}
 };
