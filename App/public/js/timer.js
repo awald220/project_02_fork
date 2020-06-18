@@ -10,8 +10,4 @@ function counterUp(){
     }
 }
 
-// setTimeOut(counterUp, 1000)
-
-// setInterval(counterUp, 1000)
-
 var id = setInterval(counterUp, 1000)
