@@ -11,8 +11,8 @@
                     </div>
                     <form>
                         <div class="form-group" id="guessBox">
-                            <label for="exampleFormControlTextarea1">Guess your guess</label>
-                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                            <label for="userGuess">Guess your guess</label>
+                            <textarea class="form-control" id="userGuess" rows="3"></textarea>
                         </div>
                     </form>
                 </div>
@@ -41,7 +41,7 @@
     var timer = 10;
     var id = setInterval(counterUp, 1000)
     var id2;
-   
+
     $("#play-button").on("click", function () {
 
         counterUp()
@@ -57,7 +57,7 @@
         // this line applies to the var id code line
 
         if (time === 0) {
-            
+
             clearInterval(id)
             $("#promptBox").hide()
             $("#guessBox").show()
@@ -67,21 +67,43 @@
 
 
         }
-        
+
     }
-    
-       
+
+
     function counterUp2() {
-     
+
         var timerDiv2 = document.querySelector(".timer2")
         timerDiv2.textContent = timer -= 1;
 
         if (timer === 0) {
             clearInterval(id2)
+
+
+            //$("#userGuess").put("/api/game", { submission: userGuess, gameId: "20", userId: "Ashley" })
+            //console.log("I did a put")
+            workdangit()
+
         }
+
     }
 
-
+    function workdangit() {
+        var userGuess = $("#userGuess").val().trim()
+        var newGame = {
+            submission: userGuess,
+            gameId: 2,
+            userId: "Kayla"
+        }
+        $.ajax("/api/game/", {
+            type: "PUT",
+            data: newGame
+        }).then(
+            function () {
+                console.log("I did a put");
+            }
+        );
+    }
 
 
 
