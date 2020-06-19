@@ -13,10 +13,11 @@ module.exports = function(app) {
 	});
 
 	app.put("/api/game", function(req, res) {
+		
 		let submission = req.body.submission;
 		let gameId = req.body.gameId;
 		let userId = req.body.userId;
-
+		console.log("userID", userId);
 		db.Game.findOne({
 			where: {
 				id: gameId,
@@ -50,8 +51,11 @@ module.exports = function(app) {
 			db.Game.update(newData, { where: { id: game.id } }).then(function(
 				result
 			) {
-				if (!newData.active) res.render("gameDetails", { game: game });
-				res.render("index", { msg: "Thanks for playing!" });
+				//these res.renders are not working
+				
+				// if (!newData.active) {res.render("gameDetails", { game: game }); console.log("All the Game DEETS");} else {
+				// 	res.render("index", { msg: "Thanks for playing!" }); console.log("And Back To Home");}
+					res.render("index", { msg: "Thanks for playing!" });
 			});
 		});
 	});
