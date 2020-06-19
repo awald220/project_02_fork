@@ -1,8 +1,9 @@
 const db = require("../models");
+const bcrypt = require("bcrypt");
+const saltRounds = 10;
 
 module.exports = function(app) {
 	app.get("/api/users", function(req, res) {
-		console.log("hello");
 		db.User.findAll({
 			where: {
 				name: req.body.name,
@@ -11,7 +12,18 @@ module.exports = function(app) {
 			res.json(dbUser);
 		});
 	});
-
+	app.get("api/getuser",(req,res)=>{
+		db.User.findOne({where: {name: req.body.name}}).then(dbUser=>{
+			bcrypt.compare(req.body.password, dbUser.password, (err,result)=>{
+				if(result){
+					res.json({myId: dbUser.id});
+				}
+				else{
+					res.json(false);
+				}
+			});
+		});
+	});
 	app.post("/api/users", function(req, res) {
 		// Check if username already exists in database
 		db.User.findOne({
@@ -20,10 +32,14 @@ module.exports = function(app) {
 			},
 		}).then(function(dbUser) {
 			// If user does not already exist, post user to database
-			if (dbUser === null) {
-				db.User.create(req.body).then(function(dbUserCreate) {
-					res.json(dbUserCreate);
-					console.log("User created");
+			if (!dbUser) {
+				bcrypt.genSalt(saltRounds, (err,salt)=>{
+					bcrypt.hash(req.body.password, salt, (err, hash)=>{
+						db.User.create({name: req.body.name, password: hash}).then(function(dbUserCreate) {
+							res.json(dbUserCreate);
+							console.log("User created");
+						});
+					});
 				});
 			} else {
 				// If user already exists, notify that username is taken
