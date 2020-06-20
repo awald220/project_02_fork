@@ -12,6 +12,7 @@ module.exports = function(app) {
 			res.json(dbUser);
 		});
 	});
+
 	app.get("api/getuser",(req,res)=>{
 		db.User.findOne({where: {name: req.body.name}}).then(dbUser=>{
 			bcrypt.compare(req.body.password, dbUser.password, (err,result)=>{
@@ -24,8 +25,10 @@ module.exports = function(app) {
 			});
 		});
 	});
+	
 	app.post("/api/users", function(req, res) {
 		// Check if username already exists in database
+		console.log("hi");
 		db.User.findOne({
 			where: {
 				name: req.body.name,
@@ -38,6 +41,7 @@ module.exports = function(app) {
 						db.User.create({name: req.body.name, password: hash}).then(function(dbUserCreate) {
 							res.json(dbUserCreate);
 							console.log("User created");
+							return;
 						});
 					});
 				});
@@ -45,7 +49,7 @@ module.exports = function(app) {
 				// If user already exists, notify that username is taken
 				// TODO: Add code that notifies user on front end
 				console.log("Username already exists");
-				res.json(false);
+				res.json({taken: true});
 			}
 		});
 	});
