@@ -1,6 +1,6 @@
 
 $("#play-button").on("click",()=>{
-	window.location.href = "/play?userId=jacob";
+	window.location.href = "/play";
 });
 
 

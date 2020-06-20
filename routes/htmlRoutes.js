@@ -23,6 +23,7 @@ module.exports = function (app) {
 				} else {
 					game = allGames.find((result) => {
 						let users = result.userIds.split(",");
+						console.log("users",users,userId);
 						return !users.some((user) => user === userId);
 					});
 					if (game) {
@@ -43,6 +44,7 @@ module.exports = function (app) {
 
 				res.render("gamePlay", {
 					prompt: prompts[prompts.length - 1],
+					gameId: game.id
 				});
 			}
 		);
