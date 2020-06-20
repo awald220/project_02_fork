@@ -32,83 +32,8 @@
             <div class="timer2"></div>
         </div>
     </div>
+    <div id='game-id' style='display:none'>{{gameId}}</div>
 </div>
 <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
 
-<script>
-
-    var time = 5;
-    var timer = 10;
-    var id = setInterval(counterUp, 1000)
-    var id2;
-
-    $("#play-button").on("click", function () {
-
-        counterUp()
-
-    })
-
-
-    function counterUp() {
-        $("#guessBox").hide()
-        var timerDiv = document.querySelector(".timer")
-        timerDiv.textContent = time -= 1;
-
-        // this line applies to the var id code line
-
-        if (time === 0) {
-
-            clearInterval(id)
-            $("#promptBox").hide()
-            $("#guessBox").show()
-            counterUp2()
-            id2 = setInterval(counterUp2, 1000)
-            $(".timer").hide()
-
-
-        }
-
-    }
-
-
-    function counterUp2() {
-
-        var timerDiv2 = document.querySelector(".timer2")
-        timerDiv2.textContent = timer -= 1;
-
-        if (timer === 0) {
-            clearInterval(id2)
-
-
-            //$("#userGuess").put("/api/game", { submission: userGuess, gameId: "20", userId: "Ashley" })
-            //console.log("I did a put")
-            workdangit()
-
-        }
-
-    }
-
-    function workdangit() {
-        var userGuess = $("#userGuess").val().trim()
-        var newGame = {
-            submission: userGuess,
-            gameId: 2,
-            userId: "Kayla"
-        }
-        $.ajax("/api/game/", {
-            type: "PUT",
-            data: newGame
-        }).then(
-            function () {
-                console.log("I did a put");
-            }
-        );
-    }
-
-
-
-
-
-
-
-</script>
+<script src='js/gamePlay.js'></script>
