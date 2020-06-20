@@ -1,6 +1,6 @@
 
-var time = 3;
-var timer = 3;
+var time = 5;
+var timer = 10;
 var id = setInterval(counterUp, 1000);
 var id2;
 var gameId = document.getElementById("game-id").textContent;
