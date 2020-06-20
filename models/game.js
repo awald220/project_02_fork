@@ -1,13 +1,13 @@
 module.exports = function(sequelize, DataTypes) {
 	const Game = sequelize.define("Game", {
-		original: DataTypes.STRING,
-		second: DataTypes.STRING,
-		third: DataTypes.STRING,
-		fourth: DataTypes.STRING,
-		final: DataTypes.STRING,
+		original: DataTypes.TEXT,
+		second: DataTypes.TEXT,
+		third: DataTypes.TEXT,
+		fourth: DataTypes.TEXT,
+		final: DataTypes.TEXT,
 		active: DataTypes.BOOLEAN,
 		busy: DataTypes.BOOLEAN,
-		userIds: DataTypes.STRING
+		userIds: DataTypes.TEXT
 	});
 	// Game.associate = function(models){
 	// 	Game.belongsTo(models.User, {
