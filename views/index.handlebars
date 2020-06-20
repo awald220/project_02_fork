@@ -1,21 +1,81 @@
 <div id="home">
   <div class="container">
-   <form>
   <div class="form-group">
-    <label for="exampleInputEmail1">Username</label>
-    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+    {{!-- Add "Create account" and "Login" buttons --}}
+    {{!-- Based on what button is pressed, display modals with fields to create account or login --}}
+    <button type="button" class="btn btn-primary" id="create">Create account</button>
+    <button type="button" class="btn btn-primary" id="login">Login</button>
+
+  <div class="modal" tabindex="-1" role="dialog" id="login-modal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Login</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          {{!-- Login form --}}
+             <form>
+    <label for="username">Username</label>
+    <p id="invalid-name"></p>
+    <input type="text" class="form-control" id="login-username" aria-describedby="emailHelp">
     <small id="emailHelp" class="form-text text-muted">We'll never share your info with anyone else.</small>
   </div>
   <div class="form-group">
-    <label for="exampleInputPassword1">Password</label>
-    <input type="password" class="form-control" id="exampleInputPassword1">
+    <label for="password">Password</label>
+    <input type="password" class="form-control" id="login-password">
   </div>
-  <button type="submit" class="btn btn-primary">Submit</button>
+  <button type="submit" class="btn btn-primary" id="login-button">Submit</button>
 </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+    <div class="modal" tabindex="-1" role="dialog" id="create-modal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Create account</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          {{!-- Create account form --}}
+             <form>
+    <label for="username">Username</label>
+    <input type="text" class="form-control" id="create-username" aria-describedby="emailHelp">
+    <small id="emailHelp" class="form-text text-muted">We'll never share your info with anyone else.</small>
+    <small id="username-taken" class="form-text text-muted" style="display: none">Username taken.</small>
+  </div>
+  <div class="form-group">
+    <label for="password">Password</label>
+    <input type="password" class="form-control" id="create-password">
+    <small id="emailHelp" class="form-text text-muted">Do not use a secure password. Our security is bad.</small>
+  </div>
+  <button type="submit" class="btn btn-primary" id="create-button">Submit</button>
+</form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
     <div class="row">
       <div class="col-8 offset-2">
         <h1>{{msg}}</h1>
         <h2>Memory Phone!</h2>
+        <h3 id="logged-in-as"></h3>
         <div class="clearfix mb-4" >
             <p>Click Here to Play!:</p>
           <button id='play-button' class="btn btn-primary float-right">Play</button>

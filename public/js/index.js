@@ -1,108 +1,100 @@
-
 $("#play-button").on("click",()=>{
-	window.location.href = "/play?userId=jacob";
+	
+	var userId = localStorage.getItem("userId");
+
+	if(userId){
+		window.location.href = "/play?userId=" + userId;
+	} else{
+		$("#logged-in-as").text("You are not logged in!")
+	}
 });
 
-
-/*
-
-// Get references to page elements
-const $exampleText = $("#example-text");
-const $exampleDescription = $("#example-description");
-const $submitBtn = $("#submit");
-const $exampleList = $("#example-list");
-
-// The API object contains methods for each kind of request we'll make
-const API = {
-	saveExample(example) {
-		return $.ajax({
-			headers: {
-				"Content-Type": "application/json",
-			},
-			type: "POST",
-			url: "api/examples",
-			data: JSON.stringify(example),
-		});
-	},
-	getExamples() {
-		return $.ajax({
-			url: "api/examples",
-			type: "GET",
-		});
-	},
-	deleteExample(id) {
-		return $.ajax({
-			url: `api/examples/${id}`,
-			type: "DELETE",
-		});
-	},
-};
-
-// refreshExamples gets new examples from the db and repopulates the list
-const refreshExamples = function() {
-	API.getExamples().then(function(data) {
-		const $examples = data.map(function(example) {
-			const $a = $("<a>")
-				.text(example.text)
-				.attr("href", `/example/${example.id}`);
-
-			const $li = $("<li>")
-				.attr({
-					class: "list-group-item",
-					"data-id": example.id,
-				})
-				.append($a);
-
-			const $button = $("<button>")
-				.addClass("btn btn-danger float-right delete")
-				.text("ｘ");
-
-			$li.append($button);
-
-			return $li;
-		});
-
-		$exampleList.empty();
-		$exampleList.append($examples);
-	});
-};
-
-// handleFormSubmit is called whenever we submit a new example
-// Save the new example to the db and refresh the list
-const handleFormSubmit = function(event) {
+// Show login modal
+$("#login").on("click", (event)=> {
 	event.preventDefault();
 
-	const example = {
-		text: $exampleText.val().trim(),
-		description: $exampleDescription.val().trim(),
+	$("#login-modal").modal({show: true});
+});
+
+// Show create modal
+$("#create").on("click", (event)=> {
+	event.preventDefault();
+
+	$("#create-modal").modal({show: true});
+});
+
+// Create user functionality
+// Grab username and password from text fields on index page
+// Call /api/users with a POST
+$("#create-button").on("click", (event)=>{
+	event.preventDefault();
+
+	var username = $("#create-username").val().trim();
+	var password = $("#create-password").val().trim();
+
+	var newUser = {
+		name: username,
+		password: password
 	};
 
-	if (!(example.text && example.description)) {
-		alert("You must enter an example text and description!");
-		return;
-	}
+	$.ajax("/api/users", {
+		type: "POST",
+		data: newUser
+	}).then(
+		function (response) {
+			if (response.taken) {
+				// Notify user that username taken
+				document.getElementById("username-taken").style = "display: block";
+			} else {
+				// Store user id in local storage
+				localStorage.setItem("userId",response.id);
+				console.log(localStorage.getItem("userId"));
 
-	API.saveExample(example).then(function() {
-		refreshExamples();
-	});
+				$("#create-modal").modal("hide");
+				
+				$("#logged-in-as").text(`Logged in as: ${response.name}`);
+			}
 
-	$exampleText.val("");
-	$exampleDescription.val("");
-};
+			$("#username").val("");
+			$("#password").val("");
+		}
+	);
 
-// handleDeleteBtnClick is called when an example's delete button is clicked
-// Remove the example from the db and refresh the list
-const handleDeleteBtnClick = function() {
-	const idToDelete = $(this)
-		.parent()
-		.attr("data-id");
 
-	API.deleteExample(idToDelete).then(function() {
-		refreshExamples();
-	});
-};
+});
 
-// Add event listeners to the submit and delete buttons
-$submitBtn.on("click", handleFormSubmit);
-$exampleList.on("click", ".delete", handleDeleteBtnClick);
-*/
+$("#login-button").on("click", (event)=>{
+	event.preventDefault();
+
+	var username = $("#login-username").val().trim();
+	var password = $("#login-password").val().trim();
+	console.log(username)
+
+	var user = {
+		name: username,
+		password: password
+	};
+	console.log(user)
+
+	$.ajax("/api/getuser", {
+		type: "POST",
+		data: user
+	}).then(
+		function(response){
+			if(response.exists){
+				localStorage.setItem("userId",response.id);
+				console.log(localStorage.getItem("userId"));
+
+				$("#login-modal").modal("hide");
+				
+				$("#logged-in-as").text(`Logged in as: ${response.name}`);
+			} else {
+				$("#invalid-name").text("Username does not exist.")
+			}
+			console.log(response)
+		}
+	)
+
+
+})
+
