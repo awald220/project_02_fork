@@ -1,5 +1,12 @@
 $("#play-button").on("click",()=>{
-	window.location.href = "/play?userId=jacob";
+	
+	var userId = localStorage.getItem("userId");
+
+	if(userId){
+		window.location.href = "/play?userId=" + userId;
+	} else{
+		$("#logged-in-as").text("You are not logged in!")
+	}
 });
 
 // Show login modal
@@ -55,3 +62,39 @@ $("#create-button").on("click", (event)=>{
 
 
 });
+
+$("#login-button").on("click", (event)=>{
+	event.preventDefault();
+
+	var username = $("#login-username").val().trim();
+	var password = $("#login-password").val().trim();
+	console.log(username)
+
+	var user = {
+		name: username,
+		password: password
+	};
+	console.log(user)
+
+	$.ajax("/api/getuser", {
+		type: "POST",
+		data: user
+	}).then(
+		function(response){
+			if(response.exists){
+				localStorage.setItem("userId",response.id);
+				console.log(localStorage.getItem("userId"));
+
+				$("#login-modal").modal("hide");
+				
+				$("#logged-in-as").text(`Logged in as: ${response.name}`);
+			} else {
+				$("#invalid-name").text("Username does not exist.")
+			}
+			console.log(response)
+		}
+	)
+
+
+})
+

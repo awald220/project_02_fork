@@ -13,14 +13,17 @@ module.exports = function(app) {
 		});
 	});
 
-	app.get("api/getuser",(req,res)=>{
+	app.post("/api/getuser",(req,res)=>{
+		console.log(req.body)
 		db.User.findOne({where: {name: req.body.name}}).then(dbUser=>{
 			bcrypt.compare(req.body.password, dbUser.password, (err,result)=>{
 				if(result){
-					res.json({myId: dbUser.id});
+					res.json({myId: dbUser.id, exists: true, name: dbUser.name});
 				}
 				else{
-					res.json(false);
+					res.json({
+						exists: false
+					});
 				}
 			});
 		});

@@ -19,12 +19,13 @@
           {{!-- Login form --}}
              <form>
     <label for="username">Username</label>
-    <input type="text" class="form-control" id="username" aria-describedby="emailHelp">
+    <p id="invalid-name"></p>
+    <input type="text" class="form-control" id="login-username" aria-describedby="emailHelp">
     <small id="emailHelp" class="form-text text-muted">We'll never share your info with anyone else.</small>
   </div>
   <div class="form-group">
     <label for="password">Password</label>
-    <input type="password" class="form-control" id="password">
+    <input type="password" class="form-control" id="login-password">
   </div>
   <button type="submit" class="btn btn-primary" id="login-button">Submit</button>
 </form>
