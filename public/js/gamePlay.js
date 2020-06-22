@@ -1,77 +1,71 @@
+// time to read, write
+let readTime = 5;
+let writeTime = 10;
+$('#guessBox').hide();
+const readId = setInterval(readCounter, 1000);
+let writeId;
+const gameId = document.getElementById('game-id').textContent;
 
-var time = 5;
-var timer = 10;
-var id = setInterval(counterUp, 1000);
-var id2;
-var gameId = document.getElementById("game-id").textContent;
-var userId = localStorage.getItem("userId");
-console.log("gameId",gameId);
-$("#play-button").on("click", function () {
-
-	counterUp();
-
+$('#play-button').on('click', function() {
+  readCounter();
 });
 
+function readCounter() {
+  const timerDiv = document.querySelector('.timer');
+  readTime -= 1;
+  timerDiv.textContent = readTime;
 
-function counterUp() {
-	$("#guessBox").hide();
-	var timerDiv = document.querySelector(".timer");
-	timerDiv.textContent = time -= 1;
-
-	// this line applies to the var id code line
-
-	if (time === 0) {
-
-		clearInterval(id);
-		$("#promptBox").hide();
-		$("#guessBox").show();
-		counterUp2();
-		id2 = setInterval(counterUp2, 1000);
-		$(".timer").hide();
-
-
-	}
-
+  if (readTime < 1) {
+    clearInterval(readId);
+    $('#promptBox').hide();
+    $('#guessBox').show();
+    // counterUp2();
+    writeId = setInterval(writeCounter, 1000);
+    $('.timer').hide();
+  }
 }
 
+function writeCounter() {
+  const timerDiv2 = document.querySelector('.timer2');
+  writeTime -= 1;
+  timerDiv2.textContent = writeTime;
 
-function counterUp2() {
-
-	var timerDiv2 = document.querySelector(".timer2");
-	timerDiv2.textContent = timer -= 1;
-
-	if (timer === 0) {
-		clearInterval(id2);
-		//$("#userGuess").put("/api/game", { submission: userGuess, gameId: "20", userId: "Ashley" })
-		//console.log("I did a put")
-		workdangit();
-
-	}
-
+  if (writeTime < 1) {
+    clearInterval(writeId);
+    postGuess();
+  }
 }
 
-function workdangit() {
-	userId = localStorage.getItem("userId");
-	var userGuess = $("#userGuess").val().trim();
-	var newGame = {
-		submission: userGuess,
-		gameId: gameId,
-		userId: userId
-	};
+function postGuess() {
+  let userId = localStorage.getItem('userId');
+  const userGuess = $('#userGuess')
+    .val()
+    .trim();
 
-	$.ajax("/api/game/", {
-		method: "PUT",
-		data: newGame,
+  if (!userId || userId === 'undefined' || userId === 'null') {
+    return alert('sorry, could not be submitted');
+  }
+  if (!userGuess || userGuess.length < 5) {
+    return alert('bad response');
+  }
 
-	}).then(function(response){
-		console.log(response);
-		if(response.done){
-			window.location.href = "/game/"+response.done;
-		}
-		console.log(response);
-		window.location.href = "/";
-	});
+  const newGame = {
+    submission: userGuess,
+    gameId,
+    userId,
+  };
+
+  $.ajax('/api/game/', {
+    method: 'PUT',
+    data: newGame,
+  }).then(function(response) {
+    if (response.error) {
+      return alert('something went wrong');
+    }
+    if (response.done) {
+      window.location.href = `/game/${response.done}`;
+    } else {
+      window.location.href = '/';
+    }
+  });
 }
-
-
-
