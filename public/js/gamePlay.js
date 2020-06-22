@@ -37,7 +37,7 @@ function writeCounter() {
 }
 
 function postGuess() {
-  let userId = localStorage.getItem('userId');
+  const userId = localStorage.getItem('userId');
   const userGuess = $('#userGuess')
     .val()
     .trim();
@@ -59,6 +59,7 @@ function postGuess() {
     method: 'PUT',
     data: newGame,
   }).then(function(response) {
+    console.log(response);
     if (response.error) {
       return alert('something went wrong');
     }
