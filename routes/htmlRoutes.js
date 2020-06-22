@@ -52,8 +52,20 @@ module.exports = function(app) {
   // Load example page and pass in an example by id
   app.get('/game/:id', function(req, res) {
     db.Game.findOne({ where: { id: req.params.id } }).then(function(dbGame) {
-      res.render('gameDetails', {
-        game: dbGame,
+      const userIdsArray = dbGame.dataValues.userIds.split(',');
+      const promises = userIdsArray.map(userId =>
+        db.User.findOne({ where: { id: userId } })
+      );
+      Promise.all(promises).then(results => {
+        const users = results.map(r => r.dataValues.name);
+        const game = {
+          ...dbGame.dataValues,
+          user1: users[0],
+          user2: users[1],
+          user3: users[2],
+          user4: users[3],
+        };
+        res.render('gameDetails', game);
       });
     });
   });

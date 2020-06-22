@@ -32,27 +32,34 @@ module.exports = function(app) {
         userIds = userId;
       }
 
-      let prompts = [game.original, game.second, game.third, game.fourth, game.final];
+      let prompts = [
+        game.original,
+        game.second,
+        game.third,
+        game.fourth,
+        game.final,
+      ];
 
       // Filter prompts to only be not null
       prompts = prompts.filter(e => e);
 
       const newData = { userIds, busy: false };
+      console.log(newData);
       if (prompts.length === 4) {
         newData.active = false;
+      } else {
+        newData.active = true;
       }
       const numberArray = ['second', 'third', 'fourth', 'final'];
       newData[numberArray[prompts.length - 1]] = submission;
-      db.Game.update(newData, { where: { id: game.id } }).then(function(result) {
+      db.Game.update(newData, { where: { id: game.id } }).then(function(
+        result
+      ) {
         if (result === 0) {
           // maybe?
           // res.json({error:true})
         }
-        if (!newData.active) {
-          res.json({ done: game.id });
-        } else {
-          res.json({});
-        }
+        res.json({ done: game.id });
       });
     });
   });
