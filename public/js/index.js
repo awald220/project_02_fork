@@ -1,7 +1,14 @@
 const userId = localStorage.getItem('userId');
 const name = localStorage.getItem('name');
 
-if (userId && name) {
+if (
+  userId &&
+  name &&
+  userId !== 'undefined' &&
+  userId !== 'null' &&
+  name !== 'undefined' &&
+  name !== 'null'
+) {
   $('#logged-in-as').text(`Logged in as: ${name}`);
 } else {
   $('#logged-in-as').text('You are not logged in!');
@@ -11,7 +18,7 @@ if (userId && name) {
 $('#play-button').on('click', () => {
   const userId = localStorage.getItem('userId');
 
-  if (userId) {
+  if (userId && userId !== 'undefined' && userId !== 'null') {
     window.location.href = `/play?userId=${userId}`;
   } else {
     $('#logged-in-as').text('You are not logged in!');
@@ -45,6 +52,10 @@ $('#create-button').on('click', event => {
     .val()
     .trim();
 
+  if (!username || !password) {
+    return alert('you must enter a username and password');
+  }
+
   const newUser = {
     name: username,
     password,
@@ -55,15 +66,16 @@ $('#create-button').on('click', event => {
     type: 'POST',
     data: newUser,
   }).then(function(response) {
+    if (response.error) {
+      return alert('error, please try again');
+    }
     if (response.taken) {
       // Notify user that username taken
       document.getElementById('username-taken').style = 'display: block';
     } else {
-      console.log(response);
       // Store user id in local storage
       localStorage.setItem('userId', response.id);
       localStorage.setItem('name', response.name);
-      console.log(localStorage.getItem('userId'));
 
       $('#create-modal').modal('hide');
 
@@ -85,32 +97,33 @@ $('#login-button').on('click', event => {
   const password = $('#login-password')
     .val()
     .trim();
-  console.log(username);
+
+  if (!username || !password) {
+    return alert('you must enter a username and password');
+  }
 
   const user = {
     name: username,
     password,
   };
-  console.log(user);
 
   // Log in to existing user
   $.ajax('/api/getuser', {
     type: 'POST',
     data: user,
   }).then(function(response) {
+    if (response.error) {
+      return alert('there was an error please try again');
+    }
     if (response.exists) {
       localStorage.setItem('userId', response.userId);
       localStorage.setItem('name', response.name);
-      console.log(localStorage.getItem('userId'));
 
       $('#login-modal').modal('hide');
 
       $('#logged-in-as').text(`Logged in as: ${response.name}`);
     } else {
-      $('#invalid-name').text(
-        'Either your username or password was wrong. Please try again.'
-      );
+      $('#invalid-name').text('Either your username or password was wrong. Please try again.');
     }
-    console.log(response);
   });
 });

@@ -23,7 +23,6 @@ module.exports = function(app) {
         } else {
           game = allGames.find(result => {
             const users = result.userIds.split(',');
-            console.log('users', users, userId);
             return !users.some(user => user === userId);
           });
           if (game) {

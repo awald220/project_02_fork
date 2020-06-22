@@ -9,12 +9,5 @@ module.exports = function(sequelize, DataTypes) {
     busy: DataTypes.BOOLEAN,
     userIds: DataTypes.TEXT,
   });
-  // Game.associate = function(models){
-  // 	Game.belongsTo(models.User, {
-  //     foreignKey: {
-  //       allowNull:
-  //     }
-  //   });
-  // };
   return Game;
 };

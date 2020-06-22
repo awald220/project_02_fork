@@ -1,50 +1,54 @@
-let time = 5;
-let timer = 10;
-const id = setInterval(counterUp, 1000);
-let id2;
+// time to read, write
+let readTime = 5;
+let writeTime = 10;
+$('#guessBox').hide();
+const readId = setInterval(readCounter, 1000);
+let writeId;
 const gameId = document.getElementById('game-id').textContent;
-let userId = localStorage.getItem('userId');
-console.log('gameId', gameId);
+
 $('#play-button').on('click', function() {
-  counterUp();
+  readCounter();
 });
 
-function counterUp() {
-  $('#guessBox').hide();
+function readCounter() {
   const timerDiv = document.querySelector('.timer');
-  time -= 1;
-  timerDiv.textContent = time;
+  readTime -= 1;
+  timerDiv.textContent = readTime;
 
-  // this line applies to the var id code line
-
-  if (time === 0) {
-    clearInterval(id);
+  if (readTime < 1) {
+    clearInterval(readId);
     $('#promptBox').hide();
     $('#guessBox').show();
-    counterUp2();
-    id2 = setInterval(counterUp2, 1000);
+    // counterUp2();
+    writeId = setInterval(writeCounter, 1000);
     $('.timer').hide();
   }
 }
 
-function counterUp2() {
+function writeCounter() {
   const timerDiv2 = document.querySelector('.timer2');
-  timer -= 1;
-  timerDiv2.textContent = timer;
+  writeTime -= 1;
+  timerDiv2.textContent = writeTime;
 
-  if (timer === 0) {
-    clearInterval(id2);
-    // $("#userGuess").put("/api/game", { submission: userGuess, gameId: "20", userId: "Ashley" })
-    // console.log("I did a put")
-    workdangit();
+  if (writeTime < 1) {
+    clearInterval(writeId);
+    postGuess();
   }
 }
 
-function workdangit() {
-  userId = localStorage.getItem('userId');
+function postGuess() {
+  let userId = localStorage.getItem('userId');
   const userGuess = $('#userGuess')
     .val()
     .trim();
+
+  if (!userId || userId === 'undefined' || userId === 'null') {
+    return alert('sorry, could not be submitted');
+  }
+  if (!userGuess || userGuess.length < 5) {
+    return alert('bad response');
+  }
+
   const newGame = {
     submission: userGuess,
     gameId,
@@ -55,11 +59,13 @@ function workdangit() {
     method: 'PUT',
     data: newGame,
   }).then(function(response) {
-    console.log(response);
+    if (response.error) {
+      return alert('something went wrong');
+    }
     if (response.done) {
       window.location.href = `/game/${response.done}`;
+    } else {
+      window.location.href = '/';
     }
-    console.log(response);
-    window.location.href = '/';
   });
 }
