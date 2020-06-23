@@ -1,7 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const exphbs = require('express-handlebars');
-
+const mysql = require('mysql2')
 const db = require('./models');
 
 const app = express();
@@ -12,7 +12,7 @@ if (process.env.JAWSDB_URL){
 	connection = mysql.createConnection(process.env.JAWSDB_URL);
 } else {
 	connection = mysql.createConnection({
-		host: "localhost2",
+		host: "localhost",
 		user: "root",
 		password: "password",
 		database: "memoryphone_db"
