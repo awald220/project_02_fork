@@ -1,18 +1,17 @@
 <div class="container">
   <div class="row">
     <div class="col-8 offset-2">
+          <a href="/">← Back To Home</a>
         <ul>{{#each game}}
       <div class="card mt-4">
         <div class="card-body">
           <h5 class="game-title">Game: </h5>
           <p>
-            <strong>ID</strong>: {{game.id}}</p>
+            <strong>Original</strong>: {{game.original}}</p>
           <p>
           <p>
-            <strong>Final:</strong>: {{game.text}}</p>
+            <strong>Final:</strong>: {{game.final}}</p>
           <p>
-            <strong>Users:</strong> {{game.users}}</p>
-          <a href="/">← Back To Home</a>
         </div>
       </div>
       {{/each}}

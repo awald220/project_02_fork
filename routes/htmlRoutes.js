@@ -74,8 +74,9 @@ module.exports = function(app) {
   });
 
   app.get('/allgames', (req, res) => {
-    db.Game.findAll({ active: false }).then(result => {
-      res.render('allGames', { games: result });
+    db.Game.findAll({ where: { active: false } }).then(result => {
+      const dataValues = result.map(e => e.dataValues);
+      res.render('allGames', { games: dataValues });
     });
   });
 
