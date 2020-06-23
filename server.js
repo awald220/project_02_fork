@@ -7,6 +7,20 @@ const db = require("./models");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+var connection;
+if (process.env.JAWSDB_URL){
+	connection = mysql.createConnection(process.env.JAWSDB_URL);
+} else {
+	connection = mysql.createConnection({
+		host: "localhost2",
+		user: "root",
+		password: "password",
+		database: "memoryphone_db"
+	});
+};
+
+connection.connect();
+
 // Middleware
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
@@ -46,3 +60,4 @@ db.sequelize.sync(syncOptions).then(function() {
 });
 
 module.exports = app;
+module.exports = connection;
