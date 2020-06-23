@@ -5,8 +5,8 @@ var wordCount = val.split(" ").length;
 console.log(val.split(" "))
 
 // time to read, write
-let readTime = Math.ceil(wordCount * .25)
-let writeTime = Math.ceil(wordCount * .5)
+let readTime = Math.ceil(wordCount * .20)
+let writeTime = Math.ceil(wordCount * .75)
 $('#guessBox').hide();
 const readId = setInterval(readCounter, 1000);
 let writeId;
