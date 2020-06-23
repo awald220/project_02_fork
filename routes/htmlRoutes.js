@@ -1,5 +1,4 @@
 const axios = require('axios');
-const request = require('request');
 const db = require('../models');
 
 module.exports = function(app) {

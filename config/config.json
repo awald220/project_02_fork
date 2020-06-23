@@ -1,6 +1,6 @@
 {
   "development": {
-    "username": "jacob",
+    "username": "root",
     "password": "password",
     "database": "memoryphone_db",
     "host": "localhost",
