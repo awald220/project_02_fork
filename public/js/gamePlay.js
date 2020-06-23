@@ -1,10 +1,18 @@
+var val = $('#promptBox').text().trim();
+console.log(val)
+
+var wordCount = val.split(" ").length;
+console.log(val.split(" "))
+
 // time to read, write
-let readTime = 5;
-let writeTime = 10;
+let readTime = Math.ceil(wordCount * .25)
+let writeTime = Math.ceil(wordCount * .5)
 $('#guessBox').hide();
 const readId = setInterval(readCounter, 1000);
 let writeId;
 const gameId = document.getElementById('game-id').textContent;
+    
+
 
 $('#play-button').on('click', function() {
   readCounter();
@@ -17,7 +25,9 @@ function readCounter() {
 
   if (readTime < 1) {
     clearInterval(readId);
+    
     $('#promptBox').hide();
+
     $('#guessBox').show();
     // counterUp2();
     writeId = setInterval(writeCounter, 1000);
