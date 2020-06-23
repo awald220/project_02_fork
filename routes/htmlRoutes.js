@@ -1,9 +1,11 @@
 const axios = require('axios');
+const request = require('request');
 const db = require('../models');
 
 module.exports = function(app) {
   // Load index page
   app.get('/', function(req, res) {
+    checkForBadWords();
     res.render('index', {
       msg: 'Welcome!',
     });
@@ -18,7 +20,8 @@ module.exports = function(app) {
         const allGames = results.map(e => e.dataValues);
 
         if (allGames.length === 0) {
-          const result = await createGame();
+          let result = false;
+          result = await createGame();
           game = result.dataValues;
         } else {
           game = allGames.find(result => {
@@ -28,7 +31,8 @@ module.exports = function(app) {
           if (game) {
             db.Game.update({ busy: true }, { where: { id: game.id } });
           } else {
-            const result = await createGame();
+            let result = false;
+            result = await createGame();
             game = result.dataValues;
           }
         }
@@ -41,12 +45,10 @@ module.exports = function(app) {
         ];
         prompts = prompts.filter(e => e);
 
-        console.log(game)
-
         res.render('gamePlay', {
           prompt: prompts[prompts.length - 1],
           gameId: game.id,
-          userIds: game.userIds
+          userIds: game.userIds,
         });
       }
     );
@@ -74,8 +76,9 @@ module.exports = function(app) {
   });
 
   app.get('/allgames', (req, res) => {
-    db.Game.findAll({ active: false }).then(result => {
-      res.render('allGames', { games: result });
+    db.Game.findAll({ where: { active: false } }).then(result => {
+      const dataValues = result.map(e => e.dataValues);
+      res.render('allGames', { games: dataValues });
     });
   });
 
@@ -83,22 +86,35 @@ module.exports = function(app) {
   app.get('*', function(req, res) {
     res.render('404');
   });
+  function checkForBadWords(content) {
+    return new Promise((resolve, reject) => {
+      axios
+        .get(
+          `https://neutrinoapi.net/bad-word-filter?user-id=jkb&api-key=hYhtJxSTcj5qSeCG9og889jCFm0yH1Kn7vwhe1FKkJA5hVh8&censor-character=*&content=${content}`
+        )
+        .then(res => {
+          resolve(res.data['censored-content'] || content);
+        })
+        .catch(err => resolve(false));
+    });
+  }
 
   function createGame() {
     return new Promise((resolve, reject) => {
       let prompt;
-
       axios
         .get('http://quotes.stormconsultancy.co.uk/random.json')
         .then(res => {
           prompt = res.data.quote;
-          resolve(
-            db.Game.create({
-              original: prompt,
-              active: true,
-              busy: true,
-            })
-          );
+          checkForBadWords(prompt).then(censored => {
+            resolve(
+              db.Game.create({
+                original: censored,
+                active: true,
+                busy: true,
+              })
+            );
+          });
         })
         .catch(err => reject('there was an error'));
     });

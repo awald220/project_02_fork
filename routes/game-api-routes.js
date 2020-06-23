@@ -1,3 +1,4 @@
+const axios = require('axios');
 const db = require('../models');
 
 module.exports = function(app) {
@@ -12,10 +13,11 @@ module.exports = function(app) {
     });
   });
 
-  app.put('/api/game', function(req, res) {
-    const { submission } = req.body;
+  app.put('/api/game', async function(req, res) {
+    let { submission } = req.body;
     const { gameId } = req.body;
     const { userId } = req.body;
+    submission = await checkForBadWords(submission);
     db.Game.findOne({
       where: {
         id: gameId,
@@ -64,3 +66,15 @@ module.exports = function(app) {
     });
   });
 };
+function checkForBadWords(content) {
+  return new Promise((resolve, reject) => {
+    axios
+      .get(
+        `https://neutrinoapi.net/bad-word-filter?user-id=jkb&api-key=hYhtJxSTcj5qSeCG9og889jCFm0yH1Kn7vwhe1FKkJA5hVh8&censor-character=*&content=${content}`
+      )
+      .then(res => {
+        resolve(res.data['censored-content']);
+      })
+      .catch(err => resolve(false));
+  });
+}

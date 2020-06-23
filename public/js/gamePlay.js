@@ -1,14 +1,14 @@
+const val = $('#promptBox')
+  .text()
+  .trim();
+console.log(val);
 
-
-var val = $('#promptBox').text().trim();
-console.log(val)
-
-var wordCount = val.split(" ").length;
-console.log(val.split(" "))
+const wordCount = val.split(' ').length;
+console.log(val.split(' '));
 
 // time to read, write
-let readTime = Math.ceil(wordCount * .20)
-let writeTime = Math.ceil(wordCount * .75)
+let readTime = Math.ceil(wordCount * 0.2);
+let writeTime = Math.ceil(wordCount * 0.75);
 $('#guessBox').hide();
 
 let writeId;
@@ -20,19 +20,16 @@ const userIds = document.getElementById('user-ids').textContent;
 
 const userId = localStorage.getItem('userId');
 
-console.log(gameId, userIds, userId)
+console.log(gameId, userIds, userId);
 
-var alreadyPlayed = localStorage.getItem(gameId) === "done"
-localStorage.setItem(gameId, "done")
+const alreadyPlayed = localStorage.getItem(gameId) === 'done';
+localStorage.setItem(gameId, 'done');
 
-if(userIds.split(",").includes(userId) || alreadyPlayed){
+if (userIds.split(',').includes(userId) || alreadyPlayed) {
   window.location.href = `/`;
-  
 } else {
   readId = setInterval(readCounter, 1000);
 }
-
-
 
 function readCounter() {
   const timerDiv = document.querySelector('.timer');
@@ -41,7 +38,7 @@ function readCounter() {
 
   if (readTime < 1) {
     clearInterval(readId);
-    
+
     $('#promptBox').hide();
 
     $('#guessBox').show();
@@ -63,7 +60,6 @@ function writeCounter() {
 }
 
 function postGuess() {
- 
   const userGuess = $('#userGuess')
     .val()
     .trim();

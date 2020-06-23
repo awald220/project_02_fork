@@ -1,18 +1,17 @@
 <div class="container">
   <div class="row">
     <div class="col-8 offset-2">
-        <ul>{{#each game}}
-      <div class="card mt-4">
-        <div class="card-body">
-          <h5 class="game-title">Game: </h5>
-          <p>
-            <strong>ID</strong>: {{game.id}}</p>
-          <p>
-          <p>
-            <strong>Final:</strong>: {{game.text}}</p>
-          <p>
-            <strong>Users:</strong> {{game.users}}</p>
           <a href="/">← Back To Home</a>
+        <ul>{{#each games}}
+      <div class="card mt-4 game"onclick="linkToDetails({{id}})" >
+        <div class="card-body">
+          <h5 class="game-title">Game </h5><p class='gameId'>{{id}}</p>
+          <p>
+            <strong>Original</strong>: {{original}}</p>
+          <p>
+          <p>
+            <strong>Final</strong>: {{final}}</p>
+          <p>
         </div>
       </div>
       {{/each}}
@@ -20,3 +19,6 @@
     </div>
   </div>
 </div>
+<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+
+<script src='js/allGames.js'></script>
