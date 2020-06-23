@@ -41,9 +41,12 @@ module.exports = function(app) {
         ];
         prompts = prompts.filter(e => e);
 
+        console.log(game)
+
         res.render('gamePlay', {
           prompt: prompts[prompts.length - 1],
           gameId: game.id,
+          userIds: game.userIds
         });
       }
     );
