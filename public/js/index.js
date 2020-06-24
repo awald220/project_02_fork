@@ -127,3 +127,7 @@ $('#login-button').on('click', event => {
     }
   });
 });
+
+$("#allGames").on('click', () => {
+    window.location.href = `/allgames`;
+});

@@ -70,11 +70,11 @@ function checkForBadWords(content) {
   return new Promise((resolve, reject) => {
     axios
       .get(
-        `https://neutrinoapi.net/bad-word-filter?user-id=jkb&api-key=hYhtJxSTcj5qSeCG9og889jCFm0yH1Kn7vwhe1FKkJA5hVh8&censor-character=*&content=${content}`
+        `https://neutrinoapi.net/bad-word-filter?user-id=jkb&api-key=78tF2i6Os4nH6eT3oI9jsxOsQUqDW068PjJbH9LMmqRXYkCo&censor-character=*&content=${content}`
       )
       .then(res => {
-        resolve(res.data['censored-content']);
+        resolve(res.data['censored-content'] || content);
       })
-      .catch(err => resolve(false));
+      .catch(err => resolve(content));
   });
 }
