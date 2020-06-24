@@ -67,9 +67,9 @@ function postGuess() {
   if (!userId || userId === 'undefined' || userId === 'null') {
     return alert('sorry, could not be submitted');
   }
-  if (!userGuess || userGuess.length < 5) {
-    return alert('bad response');
-  }
+  // if (!userGuess || userGuess.length < 5) {
+  //   return alert('bad response');
+  // }
 
   const newGame = {
     submission: userGuess,

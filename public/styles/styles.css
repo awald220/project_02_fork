@@ -1,3 +1,37 @@
 .list-group-item {
   line-height: 2.5;
 }
+#homeButtons {
+  align-content: flex-start;
+}
+
+#play-button {
+  margin-left: 10px;
+  border-color: #06c961;
+}
+
+#playHere {
+  font-weight: 800;
+  font-size: 24pt;
+  color: #06c961;
+}
+
+.card {
+  border-color: #06c961;
+}
+
+.display-4 {
+  background-color: mintcream;
+}
+
+.jumbotron {
+  background-color: mintcream;
+}
+
+.modal-content {
+  border-color: #06c961;
+}
+
+#promptBox {
+  font-size: 18pt;
+}

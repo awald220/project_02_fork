@@ -4,7 +4,7 @@ const db = require('../models');
 module.exports = function(app) {
   // Load index page
   app.get('/', function(req, res) {
-    checkForBadWords();
+    // checkForBadWords();
     res.render('index', {
       msg: 'Welcome!',
     });
@@ -94,7 +94,7 @@ module.exports = function(app) {
         .then(res => {
           resolve(res.data['censored-content'] || content);
         })
-        .catch(err => resolve(false));
+        .catch(err => resolve(content));
     });
   }
 
