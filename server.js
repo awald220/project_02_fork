@@ -5,7 +5,7 @@ const mysql = require('mysql2')
 const db = require('./models');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8080;
 
 var connection;
 if (process.env.JAWSDB_URL){
